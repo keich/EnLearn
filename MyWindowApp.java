@@ -97,6 +97,7 @@ public class MyWindowApp extends JFrame  implements KeyListener { //Наслед
     //Проверка ответа
     private void CheckAnswer() throws Exception{
     	if(Words.checkAnswer(answer_field.getText().trim())){
+    		Words.sayActiveWords();
     		ShowQuestion();
     		FirstAfterWrongAnswer = false;
     	}else{
@@ -104,7 +105,9 @@ public class MyWindowApp extends JFrame  implements KeyListener { //Наслед
     		answer_field.setCaretPosition(0);
     		answer_field.setForeground(Color.RED);
     		FirstAfterWrongAnswer = true;
+    		Words.sayActiveWords();
     	}
+    	
     }
     
     
