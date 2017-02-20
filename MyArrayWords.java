@@ -57,6 +57,8 @@ public class MyArrayWords {
 		for(int a =0;a<Words.length;a++){
 			System.out.println("In Word "+	Words[a].Answer+" Rate: "+Words[a].Rate+" LastShow: "+Words[a].LastTimeShow+" addr "+Words[a]);
 		}
+		
+		
 		int maxRate = 0;
 		//Поиск максимального Rate
 		for(int a =0;a<Words.length;a++){
@@ -64,52 +66,67 @@ public class MyArrayWords {
 				maxRate = Words[a].Rate;
 			}
 		}
-		System.out.println("Count max = "+maxRate);
-		if(maxRate > 2){
-			maxRate = maxRate - 2;
-		}else{
-			maxRate = 0;
+		//System.out.println("Count max = "+maxRate);
+
+		
+		//Выбор числа слов из которых будет в лучайном пороядке выбираться слово
+		int NumWordForTmpArray = 10;
+		if(Words.length<11){
+			NumWordForTmpArray = Words.length;
 		}
 		
-		int NumWordForTmpArray = 10;
+		//Минимальное число для найденных слов
+		int NumMinWordForTmpArray = 4;
+		if(Words.length<5){
+			NumMinWordForTmpArray = Words.length;
+		}
+		
+		//Фильтр для слов которые недавно показывались
+		int LastTimeShowEage = 3;
+		
 		MyWords searchWords[] = new MyWords[NumWordForTmpArray]; //Массив для первых NumWordForTmpArray слов с наибольшим Rate
 		
 		int found_words=0;
-		for(int a =0;a<Words.length;a++){
-			System.out.println("Debug found_words="+found_words+" a="+a );
-			if(found_words>NumWordForTmpArray-1){
-				break;
-			}
-			if(Words[a].Rate > maxRate){
-				if(Words[a].LastTimeShow < NumWordsShows-3){
-					searchWords[found_words] = Words[a];
-					found_words++;
-				}
-			}
-
-		}
 		
-		if(found_words==0){
+		//Поиск списка слов из массива которые плохо выучены
+		while(true){ //Иногда мало слов находяться при maxRate. В этом цикле будем уменьшать его что бы получить больше слов
 			found_words=0;
-			for(int a =0;a<Words.length;a++){
-				System.out.println("Debug found_words="+found_words+" a="+a );
-				if(found_words>NumWordForTmpArray-1){
-					break;
-				}
-				if(Words[a].Rate > maxRate){
-					searchWords[found_words] = Words[a];
-					found_words++;
-				}
-
+			//Если попалсиь только слова которые недавно показывались, но все слова выучены
+			if(maxRate == 0){
+				LastTimeShowEage = LastTimeShowEage -1;
+			}
+			//Выставляем maxRate чуть меньше. Все слова больше этого maxRate будут отобраны.
+			if(maxRate > 2){
+				maxRate = maxRate - 2;
+			}else{
+				maxRate = 0;
 			}
 			
+			for(int a =0;a<Words.length;a++){
+				if(Words[a].Rate >= maxRate){
+					if(Words[a].LastTimeShow < NumWordsShows-LastTimeShowEage){
+						searchWords[found_words] = Words[a];
+						found_words++;
+					}
+				}
+				//System.out.println("Debug found_words="+found_words+" a="+a +" Name="+Words[a].Answer +" NumWordForTmpArray="+NumWordForTmpArray);
+				if(found_words>=NumWordForTmpArray){
+					break;
+				}
+	
+			}
+			
+			if(found_words>=NumMinWordForTmpArray)
+				break;
+			//System.out.println("Debug 1 found_words="+found_words+" maxRate="+maxRate);
 		}
-		System.out.println("Found "+found_words+" words for random select");
+		
+		//System.out.println("Found "+found_words+" words for random select");
 		
 
-		for(int a =0;a<found_words;a++){
-			System.out.println("out Word "+	searchWords[a].Answer+" Rate: "+searchWords[a].Rate+" LastShow: "+searchWords[a].LastTimeShow);
-		}
+		//for(int a =0;a<found_words;a++){
+		//	System.out.println("out Word "+	searchWords[a].Answer+" Rate: "+searchWords[a].Rate+" LastShow: "+searchWords[a].LastTimeShow);
+		//}
 		int a = random.nextInt(found_words);
 		searchWords[a].LastTimeShow = NumWordsShows;
 		//Create audio file. This check if file exists.
