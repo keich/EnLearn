@@ -1,10 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 
@@ -173,7 +170,7 @@ public class MyArrayWords {
 	private class MyWords {
 		private String Answer;
 		private String Question;
-		private int State = 0;;
+		//private int State = 0;;
 		private int LastTimeShow = 0;
 		private int Rate = 5;
 		private String audiofilename = "";
@@ -184,47 +181,20 @@ public class MyArrayWords {
 		}
 		public void PlayAudio(){
 			System.out.println("Play audio file: "+audiofilename);
-			String arg = "aplay /tmp/"+audiofilename;
 			try {
-				Process process = new ProcessBuilder(
-						"/bin/sh","-c",arg).start();
-				InputStream is = process.getInputStream();
-				InputStreamReader isr = new InputStreamReader(is);
-				BufferedReader br = new BufferedReader(isr);
-				String line;
-
-				//System.out.printf("Output of running is:");
-
-				while ((line = br.readLine()) != null) {
-					  System.out.println(line);
-				}
+				MyAudio audio = new MyAudio();
+				audio.Play(audiofilename);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		public void createAudioFile(){
 			if( audiofilename == "" ) {
 				audiofilename = Answer.hashCode()+".wav";
-				String arg = "echo \""+Answer+"\" | /home/keich/festival/bin/text2wave -o /tmp/"+audiofilename;
-				System.out.println("Create audio file: "+audiofilename+" procces arg: "+arg);
-				String [] envp = new String[1];
-				envp[0] = "echo 1";
 				try {
-					Process process = new ProcessBuilder(
-							"/bin/sh","-c",arg).start();
-					InputStream is = process.getInputStream();
-					InputStreamReader isr = new InputStreamReader(is);
-					BufferedReader br = new BufferedReader(isr);
-					String line;
-
-					//System.out.printf("Output of running is:");
-
-					while ((line = br.readLine()) != null) {
-						  System.out.println(line);
-					}
+					MyAudio audio = new MyAudio();
+					audio.CreateAudio(Answer, audiofilename);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
