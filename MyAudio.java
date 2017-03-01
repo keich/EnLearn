@@ -25,7 +25,7 @@ public class MyAudio {
         }
 	}
 	public void CreateAudio(String Answer,String audiofilename){
-		String arg = "echo \""+Answer+"\" | /home/keich/festival/bin/text2wave -o /tmp/"+audiofilename;
+		String arg = "echo \""+Answer+"\" | text2wave -o /tmp/"+audiofilename;
 		System.out.println("Create audio file: "+audiofilename+" procces arg: "+arg);
 		MyRunCMD runCMD = new MyRunCMD(arg);
 		ExecutorService executorService = Executors.newSingleThreadExecutor();

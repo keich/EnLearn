@@ -14,7 +14,7 @@ public class MyArrayWords {
 	
 	public MyArrayWords() {
 		try {
-			LoadWords("/home/keich/w");
+			LoadWords("./w");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -27,12 +27,14 @@ public class MyArrayWords {
 		String line;
 		ArrayList<MyWords> data = new ArrayList<>();
 		while ((line = br.readLine()) != null) {
-			
-			int start = line.indexOf(" ");
-			String question = line.substring(start);
-			String answer = line.substring(0,start);
-			MyWords word = new MyWords(answer.trim(),question.trim());
-			data.add(word);
+		System.out.println("Debug"+line+"@"+line.length());	
+			if(line.length()!=0){ 
+				int start = line.indexOf(" ");
+				String question = line.substring(start);
+				String answer = line.substring(0,start);
+				MyWords word = new MyWords(answer.trim(),question.trim());
+				data.add(word);
+			}
 		}
 		br.close();
 		if(!data.isEmpty()){
